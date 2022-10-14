@@ -11,12 +11,20 @@ import java.util.Scanner;
 
 
 public class App {
+    private Book[] books;
+    private Reader[] readers;
+    private History[] histories;
+
+    public App() {
+        books = new Book[0];
+        readers = new Reader[0];
+        histories = new History[0];
+    }
     
     public void run(){
         Scanner scanner = new Scanner(System.in);
         boolean repeat = true;
-        Book book = null;
-        Reader reader = null;
+        
         History history = null;
         do{
             System.out.println("Задачи: ");
@@ -25,6 +33,7 @@ public class App {
             System.out.println("2. Добавить читателя");
             System.out.println("3. Выдать книгу");
             System.out.println("4. Вернуть книгу");
+            System.out.println("5. Список выданных книг");
             System.out.print("Выберите задачу: ");
             int task = scanner.nextInt();
             scanner.nextLine();
@@ -34,28 +43,93 @@ public class App {
                     break;
                 case 1:
                     System.out.println("1. Добавить книгу");
-                    book = createBook("Voina i mir", 3, 1956);
-                    book.addAuthor(createAuthor("Lev", "Tolstoy", 1828));
+                    System.out.print("Введите название книги: ");
+                    String bookName = scanner.nextLine();
+                    System.out.print("Введите год издания книги: ");
+                    String publishedYear = scanner.nextLine();
+                    System.out.print("Введите количество экземпляров книги: ");
+                    String quantity = scanner.nextLine();
+                    
+                    Book book = createBook(bookName, new Integer(quantity), Integer.parseInt(publishedYear));
+                    System.out.print("Введите количество авторов книги:");
+                    int countAuthorsInBook = scanner.nextInt(); scanner.nextLine();
+                    for (int i = 0; i < countAuthorsInBook; i++) {
+                        System.out.print("Введите имя автора "+(i+1)+": ");
+                        String firstname = scanner.nextLine();
+                        System.out.print("Введите фамилию автора "+(i+1)+": ");
+                        String lastname = scanner.nextLine();
+                        System.out.print("Введите год рождения автора "+(i+1)+": ");
+                        String birthday = scanner.nextLine();
+                        book.addAuthor(createAuthor(firstname, lastname, new Integer(birthday)));
+                    }
+                    Book[] newBooks = new Book[this.books.length+1];
+                    newBooks[newBooks.length-1] = book;
+                    this.books = newBooks;
                     break;
                 case 2:
                     System.out.println("2. Добавить читателя");
-                    reader = new Reader();
-                    reader.setFirstname("Ivan");
-                    reader.setLastname("Ivanov");
-                    reader.setPhone("5656565656");
+                    Reader reader = new Reader();
+                    System.out.print("Введите имя читателя: ");
+                    reader.setFirstname(scanner.nextLine());
+                    System.out.print("Введите фамилию читателя: ");
+                    reader.setLastname(scanner.nextLine());
+                    System.out.print("Введите телефон читателя: ");
+                    reader.setPhone(scanner.nextLine());
+                    Reader[] newReader = new Reader[this.readers.length + 1];
+                    newReader[newReader.length-1] = reader;
+                    this.readers = newReader;
                     break;
                 case 3:
                     System.out.println("3. Выдать книгу");
+                    System.out.println("Список читателей: ");
+                    for (int i = 0; i < readers.length; i++) {
+                        System.out.println(i+1+". "+readers[i].getFirstname()+" "+readers[i].getLastname());
+                    }
+                    System.out.print("Выбери читателя: ");
+                    int numberReader = scanner.nextInt(); scanner.nextLine();
+                    System.out.println("Список книг: ");
+                    for (int i = 0; i < books.length; i++) {
+                        System.out.print(i+1+". "+books[i].getBookName()+". ");
+                        for (int j = 0; j < books[i].getAuthors().length; j++) {
+                            System.out.printf("%s %s %d", 
+                                    books[i].getAuthors()[j].getFirstname(),
+                                    books[i].getAuthors()[j].getLastname(),
+                                    books[i].getAuthors()[j].getBirthday());
+                            
+                        }
+                        System.out.println();
+                    }
+                    System.out.print("Выбери номер книги: ");
+                    int numberBook = scanner.nextInt();scanner.nextLine();
                     history = new History();
-                    history.setBook(book);
-                    history.setReader(reader);
+                    history.setBook(books[numberBook - 1]);
+                    history.setReader(readers[numberReader-1]);
                     history.setTakeOnBook(new GregorianCalendar().getTime());
+                    History[] newHistories = new History[this.histories.length+1];
+                    newHistories[newHistories.length-1] = history;
+                    this.histories = newHistories;
                     System.out.println(history);
                     break;
                 case 4: 
                     System.out.println("4. Вернуть книгу");
                     history.setReturnBook(new GregorianCalendar().getTime());
                     System.out.println(history);
+                    break;
+                case 5: 
+                    System.out.println("5. Список выданных книг");
+                    for (int i = 0; i < histories.length; i++) {
+                        if(histories[i].getReturnBook() == null){
+                            System.out.print(i+1+". "+histories[i].getBook().getBookName()+". ");
+                            for (int j = 0; j < histories[i].getBook().getAuthors().length; j++) {
+                                System.out.printf("%s %s %d", 
+                                        histories[i].getBook().getAuthors()[j].getFirstname(),
+                                        histories[i].getBook().getAuthors()[j].getLastname(),
+                                        histories[i].getBook().getAuthors()[j].getBirthday());
+
+                            }
+                            System.out.println();
+                        }
+                    }
                     break;
                 default:
                     System.out.println("Выберите задачу из списка!");;
