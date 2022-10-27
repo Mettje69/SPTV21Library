@@ -56,7 +56,7 @@ public class BookManager {
         book.setQuantity(quantity);
         return book;
     }
-    public Author createAuthor(String firstname, String lastname, int birthday){
+    private Author createAuthor(String firstname, String lastname, int birthday){
         Author author = new Author();
         author.setBirthday(birthday);
         author.setFirstname(firstname);
@@ -65,17 +65,7 @@ public class BookManager {
     }
     public Book[] changeBook(Book[] books) {
         System.out.println("Список книг: ");
-        for (int i = 0; i < books.length; i++) {
-            System.out.print(i+1+". "+books[i].getBookName()+". ");
-            for (int j = 0; j < books[i].getAuthors().length; j++) {
-                System.out.printf("%s %s %d", 
-                        books[i].getAuthors()[j].getFirstname(),
-                        books[i].getAuthors()[j].getLastname(),
-                        books[i].getAuthors()[j].getBirthday());
-
-            }
-            System.out.println();
-        }
+        printListBooks(books);
         System.out.print("Выберите номер книги для редактирования: ");
         int numBookForEdit = scanner.nextInt(); scanner.nextLine();
         System.out.print("Название книги: ");

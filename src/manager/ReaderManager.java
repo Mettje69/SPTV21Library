@@ -34,4 +34,33 @@ public class ReaderManager {
             );
         }
     }
+
+    public Reader[] changeReader(Reader[] readers) {
+        System.out.println("Список читателей: ");
+        this.printListReaders(readers);
+        System.out.print("Выберите номер читателя: ");
+        int numberReader = scanner.nextInt();scanner.nextLine();
+        System.out.println("Имя: "+readers[numberReader-1].getFirstname());
+        System.out.print("Изменить? (y/n): ");
+        String letter = scanner.nextLine();
+        if(letter.equals("y")){
+            System.out.println("Введите новое имя: ");
+            readers[numberReader - 1].setFirstname(scanner.nextLine());
+        }
+        System.out.println("Фамилия: "+readers[numberReader-1].getLastname());
+        System.out.print("Изменить? (y/n): ");
+        letter = scanner.nextLine();
+        if(letter.equals("y")){
+            System.out.println("Введите фамилию: ");
+            readers[numberReader - 1].setLastname(scanner.nextLine());
+        }
+        System.out.println("Телефон: "+readers[numberReader-1].getPhone());
+        System.out.print("Изменить? (y/n): ");
+        letter = scanner.nextLine();
+        if(letter.equals("y")){
+            System.out.println("Введите телефон: ");
+            readers[numberReader - 1].setPhone(scanner.nextLine());
+        }
+        return readers;
+    }
 }

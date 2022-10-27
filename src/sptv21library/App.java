@@ -2,12 +2,10 @@
 
 package sptv21library;
 
-import entity.Author;
 import entity.Book;
 import entity.History;
 import entity.Reader;
 import java.util.Arrays;
-import java.util.GregorianCalendar;
 import java.util.Scanner;
 import manager.BookManager;
 import manager.HistoryManager;
@@ -16,12 +14,12 @@ import manager.ReaderManager;
 
 public class App {
     private final Scanner scanner;
-    private Book[] books;
-    private Reader[] readers;
-    private History[] histories;
     private final BookManager bookManager;
     private final ReaderManager readerManager;
     private final HistoryManager historyManager;
+    private Book[] books;
+    private Reader[] readers;
+    private History[] histories;
 
     public App() {
         scanner = new Scanner(System.in);
@@ -46,6 +44,7 @@ public class App {
             System.out.println("6. Список книг");
             System.out.println("7. Список читателей");
             System.out.println("8. Редактировать книгу");
+            System.out.println("9. Редактировать читателя");
             System.out.print("Выберите задачу: ");
             int task = scanner.nextInt();
             scanner.nextLine();
@@ -82,7 +81,12 @@ public class App {
                     readerManager.printListReaders(readers);
                     break;
                 case 8:
+                    System.out.println("8. Редактирование книги");
                     this.books = bookManager.changeBook(books);
+                    break;
+                case 9:
+                    System.out.println("8. Редактирование читателя");
+                    this.readers = readerManager.changeReader(readers);
                     break;
                 default:
                     System.out.println("Выберите задачу из списка!");;
